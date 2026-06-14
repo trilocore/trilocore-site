@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://kronotitans.com/sitemap.xml
+Sitemap: https://trilocore.ai/sitemap.xml
