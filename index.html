@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trilocore — Blockchain Security Infrastructure</title>
+  <meta name="description" content="Trilocore builds GPU-accelerated smart contract security infrastructure. BEVM fuzzer, Janus AI model, 208 vulnerability detectors. Seeking ecosystem grants." />
+  <link rel="canonical" href="https://trilocore.ai/" />
+  <meta name="theme-color" content="#0a0c10" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/favicon.svg" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Trilocore" />
+  <meta property="og:title" content="Trilocore — Blockchain Security Infrastructure" />
+  <meta property="og:description" content="GPU-accelerated EVM fuzzer + AI-powered vulnerability detection. Securing the on-chain future." />
+  <meta property="og:url" content="https://trilocore.ai/" />
+  <meta property="og:image" content="https://trilocore.ai/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Trilocore — Securing the On-Chain Future" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Trilocore — Blockchain Security Infrastructure" />
+  <meta name="twitter:description" content="GPU-accelerated EVM fuzzer + AI-powered vulnerability detection. Securing the on-chain future." />
+  <meta name="twitter:image" content="https://trilocore.ai/og-image.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Reset & tokens ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0a0c10;
+      --surface:   #0f1115;
+      --elevated:  #1a1d23;
+      --overlay:   #252a31;
+      --border:    #2d333b;
+      --border-hi: #444c56;
+      --accent:    #58a6ff;
+      --accent-hi: #79c0ff;
+      --accent-glow: rgba(88,166,255,.18);
+      --text:      #e6edf3;
+      --muted:     #7d8590;
+      --faint:     #484f58;
+      --green:     #3fb950;
+      --green-g:   rgba(63,185,80,.15);
+      --red:       #f85149;
+      --orange:    #db6d28;
+      --yellow:    #d29922;
+      --radius:    8px;
+    }
+
+    html { scroll-behavior: smooth; color-scheme: dark; }
+
+    body {
+      font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: rgba(88,166,255,.25); }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-hi); }
+
+    /* ── Grid / layout helpers ──────────────────────────────────── */
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    .section    { padding: 100px 0; }
+    .section-sm { padding: 64px 0; }
+
+    /* ── Nav ────────────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 60px;
+      background: rgba(10,12,16,.88);
+      backdrop-filter: blur(12px) saturate(1.4);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 24px;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      font-weight: 700; font-size: 17px; color: var(--text);
+    }
+    .nav-logo svg { flex-shrink: 0; }
+    .nav-links {
+      display: flex; align-items: center; gap: 28px; list-style: none;
+    }
+    .nav-links a {
+      color: var(--muted); font-size: 14px; font-weight: 500;
+      transition: color 120ms;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--accent); color: #fff; font-size: 13px; font-weight: 600;
+      padding: 7px 18px; border-radius: var(--radius);
+      transition: background 120ms, box-shadow 120ms;
+    }
+    .nav-cta:hover {
+      background: var(--accent-hi); color: #fff;
+      box-shadow: 0 0 16px var(--accent-glow);
+    }
+
+    /* ── Hero ───────────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding-top: 60px;
+      position: relative; overflow: hidden;
+    }
+    /* grid overlay */
+    .hero::before {
+      content: "";
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(88,166,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(88,166,255,.04) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+    }
+    /* radial glow */
+    .hero::after {
+      content: "";
+      position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
+      width: 900px; height: 600px;
+      background: radial-gradient(ellipse at center, rgba(88,166,255,.08) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    /* particle network canvas */
+    #hero-canvas {
+      position: absolute; inset: 0; z-index: 0;
+      pointer-events: none; opacity: .55;
+    }
+    /* floating gradient orbs */
+    .orb {
+      position: absolute; border-radius: 50%; pointer-events: none;
+      filter: blur(60px); opacity: .35; z-index: 0;
+    }
+    .orb-1 {
+      width: 340px; height: 340px; top: 8%; left: -80px;
+      background: radial-gradient(circle, rgba(88,166,255,.5), transparent 70%);
+      animation: float1 14s ease-in-out infinite;
+    }
+    .orb-2 {
+      width: 280px; height: 280px; bottom: 12%; right: -60px;
+      background: radial-gradient(circle, rgba(63,185,80,.4), transparent 70%);
+      animation: float2 18s ease-in-out infinite;
+    }
+    .orb-3 {
+      width: 220px; height: 220px; top: 40%; right: 22%;
+      background: radial-gradient(circle, rgba(210,153,34,.28), transparent 70%);
+      animation: float3 22s ease-in-out infinite;
+    }
+    @keyframes float1 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50%     { transform: translate(60px,40px) scale(1.12); }
+    }
+    @keyframes float2 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50%     { transform: translate(-50px,-30px) scale(1.08); }
+    }
+    @keyframes float3 {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50%     { transform: translate(-30px,50px) scale(1.15); }
+    }
+
+    .hero-inner { position: relative; z-index: 2; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(88,166,255,.1); border: 1px solid rgba(88,166,255,.25);
+      border-radius: 100px; padding: 5px 14px;
+      font-size: 12px; font-weight: 600; color: var(--accent);
+      text-transform: uppercase; letter-spacing: .06em;
+      margin-bottom: 28px;
+    }
+    .hero-badge span { width: 6px; height: 6px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)} }
+
+    .hero h1 {
+      font-size: clamp(38px, 6vw, 72px);
+      font-weight: 900; line-height: 1.08; letter-spacing: -.03em;
+      margin-bottom: 24px;
+    }
+    .gradient-text {
+      background: linear-gradient(115deg, #58a6ff 0%, #79c0ff 25%, #3fb950 50%, #79c0ff 75%, #58a6ff 100%);
+      background-size: 250% auto;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmer 6s linear infinite;
+    }
+    @keyframes shimmer {
+      0%   { background-position: 0% center; }
+      100% { background-position: 250% center; }
+    }
+
+    /* hero entrance animations */
+    @keyframes heroUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-badge { animation: heroUp .7s ease both; }
+    .hero h1     { animation: heroUp .7s ease .1s both; }
+    .hero-sub    { animation: heroUp .7s ease .2s both; }
+    .hero-actions{ animation: heroUp .7s ease .3s both; }
+    .hero .terminal { animation: heroUp .7s ease .4s both; }
+
+    /* animated logo */
+    .nav-logo svg .logo-outer {
+      transform-box: fill-box; transform-origin: center;
+      animation: logoSpin 24s linear infinite;
+    }
+    .nav-logo svg .logo-inner {
+      transform-box: fill-box; transform-origin: center;
+      animation: logoSpin 16s linear infinite reverse;
+    }
+    .nav-logo svg .logo-core {
+      transform-box: fill-box; transform-origin: center;
+      animation: corePulse 2.4s ease-in-out infinite;
+    }
+    @keyframes logoSpin { to { transform: rotate(360deg); } }
+    @keyframes corePulse {
+      0%,100% { opacity: 1; r: 2.5; }
+      50%     { opacity: .5; r: 3.4; }
+    }
+    .hero-sub {
+      font-size: clamp(16px, 2.2vw, 20px);
+      color: var(--muted); max-width: 620px;
+      line-height: 1.65; margin-bottom: 40px;
+    }
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    /* ── Buttons ────────────────────────────────────────────────── */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--accent); color: #fff;
+      font-weight: 600; font-size: 14px; padding: 12px 24px;
+      border-radius: var(--radius); border: none; cursor: pointer;
+      transition: background 150ms, box-shadow 150ms, transform 100ms;
+    }
+    .btn-primary:hover {
+      background: var(--accent-hi); color: #fff;
+      box-shadow: 0 0 24px var(--accent-glow);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: var(--text);
+      font-weight: 600; font-size: 14px; padding: 11px 24px;
+      border-radius: var(--radius); border: 1px solid var(--border-hi); cursor: pointer;
+      transition: border-color 150ms, background 150ms, transform 100ms;
+    }
+    .btn-secondary:hover {
+      border-color: var(--accent); background: var(--accent-glow);
+      color: var(--text); transform: translateY(-1px);
+    }
+
+    /* ── Stats bar ──────────────────────────────────────────────── */
+    .stats-bar {
+      padding: 28px 0;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 0;
+    }
+    .stat-item {
+      text-align: center; padding: 12px 16px;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-size: 28px; font-weight: 800; color: var(--text);
+      font-variant-numeric: tabular-nums; letter-spacing: -.03em;
+    }
+    .stat-num .accent { color: var(--accent); }
+    .stat-label { font-size: 12px; color: var(--muted); margin-top: 2px; font-weight: 500; }
+
+    /* ── Section headers ────────────────────────────────────────── */
+    .section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-size: clamp(26px, 4vw, 42px);
+      font-weight: 800; letter-spacing: -.02em; line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .section-body {
+      font-size: 16px; color: var(--muted); max-width: 560px; line-height: 1.7;
+    }
+
+    /* ── Problem section ────────────────────────────────────────── */
+    .problem-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 48px;
+      align-items: center; margin-top: 64px;
+    }
+    .problem-card {
+      background: var(--elevated); border: 1px solid var(--border);
+      border-radius: 12px; padding: 24px;
+    }
+    .problem-stat {
+      font-size: 48px; font-weight: 900; line-height: 1;
+      letter-spacing: -.04em; margin-bottom: 8px;
+    }
+    .red { color: var(--red); }
+    .orange { color: var(--orange); }
+    .yellow { color: var(--yellow); }
+    .green-c { color: var(--green); }
+    .problem-desc { color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+    .problem-list { list-style: none; }
+    .problem-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px 0; border-bottom: 1px solid var(--border);
+      font-size: 15px;
+    }
+    .problem-list li:last-child { border-bottom: none; }
+    .pill {
+      flex-shrink: 0; font-size: 11px; font-weight: 700; font-family: "JetBrains Mono", monospace;
+      padding: 3px 8px; border-radius: 4px; margin-top: 2px;
+    }
+    .pill-red    { background: rgba(248,81,73,.15); color: var(--red); }
+    .pill-orange { background: rgba(219,109,40,.15); color: var(--orange); }
+    .pill-yellow { background: rgba(210,153,34,.15); color: var(--yellow); }
+
+    /* ── Products ───────────────────────────────────────────────── */
+    .products { background: var(--surface); }
+    .products-header { text-align: center; margin-bottom: 64px; }
+    .products-header .section-body { margin: 0 auto; }
+
+    .product-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+    }
+    .product-card {
+      background: var(--elevated); border: 1px solid var(--border);
+      border-radius: 12px; padding: 36px;
+      transition: border-color 200ms, box-shadow 200ms;
+      position: relative; overflow: hidden;
+    }
+    .product-card::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    }
+    .product-card.bevm-card::before { background: linear-gradient(90deg, #58a6ff, #3fb950); }
+    .product-card.janus-card::before { background: linear-gradient(90deg, #d29922, #db6d28); }
+    .product-card:hover {
+      border-color: var(--border-hi);
+      box-shadow: 0 8px 32px rgba(0,0,0,.4);
+    }
+    .product-icon {
+      width: 48px; height: 48px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px; font-size: 22px;
+    }
+    .product-icon.blue { background: rgba(88,166,255,.12); }
+    .product-icon.gold { background: rgba(210,153,34,.12); }
+    .product-name { font-size: 22px; font-weight: 700; margin-bottom: 6px; }
+    .product-url {
+      font-size: 12px; color: var(--accent); font-family: "JetBrains Mono", monospace;
+      margin-bottom: 16px; display: flex; align-items: center; gap: 4px;
+    }
+    .product-url .future { color: var(--faint); font-size: 11px; }
+    .product-desc { color: var(--muted); font-size: 14px; line-height: 1.65; margin-bottom: 24px; }
+    .feature-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .feature-list li {
+      display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--muted);
+    }
+    .feature-list li::before {
+      content: "▸"; color: var(--accent); flex-shrink: 0; margin-top: 1px; font-size: 12px;
+    }
+    .feature-list.gold li::before { color: var(--yellow); }
+
+    /* ── Architecture ───────────────────────────────────────────── */
+    .arch-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+      margin-top: 56px;
+    }
+    .arch-card {
+      background: var(--elevated); border: 1px solid var(--border);
+      border-radius: 10px; padding: 24px;
+    }
+    .arch-num {
+      font-family: "JetBrains Mono", monospace; font-size: 11px;
+      font-weight: 600; color: var(--accent); margin-bottom: 12px;
+    }
+    .arch-title { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+    .arch-body { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+    /* ── Grant ask ──────────────────────────────────────────────── */
+    .grant { background: var(--surface); }
+    .grant-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 56px; }
+
+    .milestone-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+    .milestone {
+      display: flex; gap: 20px; padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .milestone:last-child { border-bottom: none; }
+    .ms-dot {
+      width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; font-family: "JetBrains Mono", monospace;
+    }
+    .ms-dot.done { background: var(--green-g); color: var(--green); }
+    .ms-dot.active { background: rgba(88,166,255,.12); color: var(--accent); }
+    .ms-dot.next { background: rgba(210,153,34,.12); color: var(--yellow); }
+    .ms-dot.future { background: rgba(72,79,88,.2); color: var(--faint); }
+    .ms-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
+    .ms-body { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+    .budget-card {
+      background: var(--elevated); border: 1px solid var(--border);
+      border-radius: 12px; padding: 28px;
+    }
+    .budget-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+    .budget-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 0; border-bottom: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .budget-row:last-child { border-bottom: none; }
+    .budget-label { color: var(--muted); }
+    .budget-pct { font-weight: 700; color: var(--text); }
+    .budget-bar {
+      height: 4px; background: var(--overlay); border-radius: 2px; margin-top: 6px;
+      overflow: hidden;
+    }
+    .budget-fill { height: 100%; border-radius: 2px; background: var(--accent); }
+    .budget-fill.green { background: var(--green); }
+    .budget-fill.yellow { background: var(--yellow); }
+    .budget-fill.orange { background: var(--orange); }
+
+    /* ── Ecosystem ──────────────────────────────────────────────── */
+    .ecosystem { text-align: center; padding: 80px 0; }
+    .grant-types {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 12px;
+      margin-top: 36px;
+    }
+    .grant-badge {
+      background: var(--elevated); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 10px 20px;
+      font-size: 13px; font-weight: 500; color: var(--muted);
+      transition: border-color 150ms, color 150ms;
+    }
+    .grant-badge:hover { border-color: var(--accent); color: var(--text); }
+
+    /* ── CTA / Apply ────────────────────────────────────────────── */
+    .apply {
+      background: linear-gradient(135deg, rgba(88,166,255,.05) 0%, rgba(63,185,80,.03) 100%);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    }
+    .apply-inner { text-align: center; max-width: 640px; margin: 0 auto; }
+    .apply-form {
+      margin-top: 40px;
+      background: var(--elevated); border: 1px solid var(--border);
+      border-radius: 12px; padding: 32px; text-align: left;
+    }
+    .form-row { margin-bottom: 20px; }
+    .form-row label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .05em; }
+    .form-row input,
+    .form-row select,
+    .form-row textarea {
+      width: 100%; background: var(--overlay); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 10px 14px;
+      color: var(--text); font-family: inherit; font-size: 14px;
+      outline: none; transition: border-color 150ms;
+    }
+    .form-row input:focus,
+    .form-row select:focus,
+    .form-row textarea:focus { border-color: var(--accent); }
+    .form-row textarea { resize: vertical; min-height: 90px; }
+    .form-row select option { background: var(--overlay); }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-submit {
+      width: 100%;
+      background: var(--accent); color: #fff;
+      font-weight: 600; font-size: 14px; padding: 13px;
+      border-radius: var(--radius); border: none; cursor: pointer;
+      margin-top: 8px; transition: background 150ms, box-shadow 150ms;
+    }
+    .form-submit:hover {
+      background: var(--accent-hi);
+      box-shadow: 0 0 24px var(--accent-glow);
+    }
+
+    /* ── Footer ─────────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      background: var(--surface); padding: 48px 0 32px;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+      margin-bottom: 40px;
+    }
+    .footer-brand { font-weight: 700; font-size: 16px; margin-bottom: 10px; }
+    .footer-tagline { font-size: 13px; color: var(--muted); line-height: 1.6; max-width: 260px; }
+    .footer-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--faint); margin-bottom: 14px; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-links a { font-size: 13px; color: var(--muted); transition: color 120ms; }
+    .footer-links a:hover { color: var(--text); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 24px; border-top: 1px solid var(--border);
+      font-size: 12px; color: var(--faint);
+    }
+
+    /* ── Code badge ─────────────────────────────────────────────── */
+    code {
+      font-family: "JetBrains Mono", monospace; font-size: .85em;
+      background: rgba(88,166,255,.08); color: var(--accent);
+      padding: 2px 6px; border-radius: 4px;
+    }
+
+    /* ── Responsive ─────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .problem-grid, .product-grid, .grant-grid, .arch-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-item:nth-child(even) { }
+    }
+
+    /* ── Scroll animations ──────────────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 600ms ease, transform 600ms ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 80ms; }
+    .reveal-delay-2 { transition-delay: 160ms; }
+    .reveal-delay-3 { transition-delay: 240ms; }
+
+    /* ── Terminal block ─────────────────────────────────────────── */
+    .terminal {
+      background: #060810; border: 1px solid var(--border); border-radius: 10px;
+      padding: 20px 24px; font-family: "JetBrains Mono", monospace; font-size: 13px;
+      line-height: 1.7; overflow-x: auto;
+    }
+    .terminal .prompt { color: var(--green); }
+    .terminal .cmd { color: var(--text); }
+    .terminal .out  { color: var(--muted); }
+    .terminal .hl   { color: var(--accent); }
+    .terminal .crit { color: var(--red); font-weight: 600; }
+    .terminal .high { color: var(--orange); font-weight: 600; }
+
+    /* ── Terminal line reveal ───────────────────────────────────── */
+    #terminal > div { opacity: 0; transform: translateX(-6px); }
+    #terminal.run > div { animation: lineIn .25s ease forwards; }
+    @keyframes lineIn { to { opacity: 1; transform: translateX(0); } }
+    /* blinking cursor on the command line */
+    .cursor {
+      display: inline-block; width: 8px; height: 1em; vertical-align: -2px;
+      background: var(--green); margin-left: 2px;
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* ── Card hover lift ────────────────────────────────────────── */
+    .product-card, .arch-card, .problem-card, .grant-badge {
+      will-change: transform;
+    }
+    .arch-card { transition: transform 200ms ease, border-color 200ms, box-shadow 200ms; }
+    .arch-card:hover { transform: translateY(-4px); border-color: var(--border-hi); box-shadow: 0 8px 24px rgba(0,0,0,.35); }
+    .product-card:hover { transform: translateY(-4px); }
+    .stat-item { transition: transform 200ms ease; }
+    .stat-item:hover { transform: translateY(-3px); }
+    .stat-item:hover .stat-num { color: var(--accent); }
+
+    /* respect reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .001ms !important;
+      }
+      #hero-canvas, .orb { display: none; }
+    }
+
+    /* ── Toast ──────────────────────────────────────────────────── */
+    .toast {
+      position: fixed; bottom: 24px; right: 24px;
+      background: var(--green); color: #fff;
+      font-size: 14px; font-weight: 600; padding: 12px 20px;
+      border-radius: var(--radius); box-shadow: 0 4px 20px rgba(0,0,0,.4);
+      transform: translateY(80px); opacity: 0;
+      transition: transform 300ms, opacity 300ms;
+      z-index: 999;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ──────────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <polygon class="logo-outer" points="14,2 26,8 26,20 14,26 2,20 2,8" fill="none" stroke="#58a6ff" stroke-width="1.5"/>
+        <polygon class="logo-inner" points="14,7 21,11 21,17 14,21 7,17 7,11" fill="rgba(88,166,255,.1)" stroke="#58a6ff" stroke-width="1"/>
+        <circle class="logo-core" cx="14" cy="14" r="2.5" fill="#3fb950"/>
+      </svg>
+      Trilocore
+    </div>
+    <ul class="nav-links">
+      <li><a href="#problem">Problem</a></li>
+      <li><a href="#products">Products</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#apply">Apply for Grant</a></li>
+    </ul>
+    <a href="#apply" class="nav-cta">Apply Now</a>
+  </div>
+</nav>
+
+<!-- ── Hero ────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="container hero-inner">
+    <div class="hero-badge">
+      <span></span>
+      Seeking Ecosystem Grants &nbsp;·&nbsp; Open-Source Security Infrastructure
+    </div>
+    <h1>
+      Securing the<br />
+      <span class="gradient-text">On-Chain Future</span>
+    </h1>
+    <p class="hero-sub">
+      Trilocore builds GPU-accelerated smart contract security tooling —
+      combining a 1024-thread EVM fuzzer with Janus, our AI-powered
+      vulnerability analysis model. 208 detectors. 50K–200K executions/second.
+      Open infrastructure for the entire ecosystem.
+    </p>
+    <div class="hero-actions">
+      <a href="#apply" class="btn-primary">
+        Apply for Grant
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="https://bevm.trilocore.ai/" target="_blank" rel="noopener" class="btn-secondary">
+        Live Demo — bevm.trilocore.ai
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+          <path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Terminal preview -->
+    <div class="terminal" id="terminal" style="margin-top:52px; max-width:680px;">
+      <div><span class="prompt">$</span> <span class="cmd">scs analyze 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48 --fuzz</span><span class="cursor"></span></div>
+      <div class="out">  Phase 1 · Recon         ████████ 0.18s  balance: 142.3 ETH</div>
+      <div class="out">  Phase 2 · X-Ray         ████████ 0.31s  selectors: 24, IR lifted</div>
+      <div class="out">  Phase 3 · Attack Graph  ████████ 0.09s  <span class="hl">3 orphan routes discovered</span></div>
+      <div class="out">  Phase 4 · GPU Fuzz      ████████ 120s   <span class="hl">187,432 exec/sec</span></div>
+      <div class="out">  ─────────────────────────────────────────────────────────</div>
+      <div>  <span class="crit">CRITICAL</span> &nbsp;Delegatecall injection → arbitrary storage write (slot 0x0)</div>
+      <div>  <span class="high">HIGH</span>    &nbsp;Reentrancy: withdraw() violates CEI, 3.8 ETH extractable</div>
+      <div class="out">  Exploit PoC generated → <span class="hl">dfresults/exploit_0xA0b8.sol</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Stats bar ────────────────────────────────────────────────────── -->
+<div class="stats-bar">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter accent" data-target="480">0</span><span class="accent">K+</span></div>
+        <div class="stat-label">Lines of Security Code</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter" data-target="208">0</span></div>
+        <div class="stat-label">Static Detectors</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter" data-target="1024">0</span></div>
+        <div class="stat-label">Parallel Threads</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter accent" data-target="200">0</span><span class="accent">K</span></div>
+        <div class="stat-label">Executions / Second</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter" data-target="633">0</span></div>
+        <div class="stat-label">Tests Passing</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num"><span class="counter" data-target="35">0</span></div>
+        <div class="stat-label">Security Modules</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Problem ──────────────────────────────────────────────────────── -->
+<section class="section" id="problem">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">The Problem</div>
+      <h2 class="section-title">$5.8 billion lost to<br />smart contract exploits</h2>
+      <p class="section-body">
+        Existing tools miss the attacks that matter — computed jumps into orphan blocks,
+        flash-loan oracle manipulation, and composed multi-primitive chains. Manual audits
+        take weeks and cost hundreds of thousands of dollars. The ecosystem needs
+        automated, deep-coverage security infrastructure that anyone can run.
+      </p>
+    </div>
+
+    <div class="problem-grid">
+      <div>
+        <div class="problem-card reveal reveal-delay-1" style="margin-bottom:16px">
+          <div class="problem-stat red">$5.8B</div>
+          <div class="problem-desc">Total value drained from smart contracts in 2024 alone — reentrancy, oracle manipulation, access control bypasses.</div>
+        </div>
+        <div class="problem-card reveal reveal-delay-2" style="margin-bottom:16px">
+          <div class="problem-stat orange">73%</div>
+          <div class="problem-desc">of critical on-chain exploits involve vulnerability patterns that existing static analyzers fail to detect in a complete end-to-end analysis.</div>
+        </div>
+        <div class="problem-card reveal reveal-delay-3">
+          <div class="problem-stat yellow">$250K</div>
+          <div class="problem-desc">Average cost of a professional manual smart contract audit — prohibitive for open-source and early-stage protocols.</div>
+        </div>
+      </div>
+
+      <div class="reveal reveal-delay-2">
+        <h3 style="font-size:17px;font-weight:700;margin-bottom:20px;color:var(--muted);">What existing tools miss</h3>
+        <ul class="problem-list">
+          <li>
+            <span class="pill pill-red">P0</span>
+            <div>
+              <strong>Orphan block exploits</strong> — dead code blocks with DELEGATECALL or SELFDESTRUCT reachable via computed JUMP at runtime. No existing tool discovers these paths.
+            </div>
+          </li>
+          <li>
+            <span class="pill pill-orange">P1</span>
+            <div>
+              <strong>Composed attack chains</strong> — flash loan + oracle manipulation + reentrancy chains. Tools analyze single transactions, missing the multi-step kill chain.
+            </div>
+          </li>
+          <li>
+            <span class="pill pill-orange">P1</span>
+            <div>
+              <strong>Gate bypass patterns</strong> — <code>require(msg.sender == owner)</code> bypassed via ungated writers to the owner slot. Attack graph traversal is absent from all open-source tools.
+            </div>
+          </li>
+          <li>
+            <span class="pill pill-yellow">P2</span>
+            <div>
+              <strong>Cross-protocol composability</strong> — Aave flash loan → Uniswap oracle → Compound drain. No fuzzer models this today.
+            </div>
+          </li>
+          <li>
+            <span class="pill pill-yellow">P2</span>
+            <div>
+              <strong>Speed</strong> — Echidna and Foundry fuzz at ~5K iterations/second. We run 200K+. 40× speed means 40× deeper coverage in the same time budget.
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Products ─────────────────────────────────────────────────────── -->
+<section class="section products" id="products">
+  <div class="container">
+    <div class="products-header reveal">
+      <div class="section-label">Our Tools</div>
+      <h2 class="section-title">Two weapons. One mission.</h2>
+      <p class="section-body">
+        BEVM Scanner catches what fuzzers and auditors miss.
+        Janus AI explains what it finds in plain language.
+        Together they form a complete security pipeline — from bytecode X-ray to working exploit PoC.
+      </p>
+    </div>
+
+    <div class="product-grid">
+      <!-- BEVM -->
+      <div class="product-card bevm-card reveal reveal-delay-1">
+        <div class="product-icon blue">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <rect x="2" y="3" width="20" height="14" rx="2" stroke="#58a6ff" stroke-width="1.6"/>
+            <path d="M8 21h8M12 17v4" stroke="#58a6ff" stroke-width="1.6" stroke-linecap="round"/>
+            <path d="M6 7h4M6 10h3M6 13h6" stroke="#58a6ff" stroke-width="1.2" stroke-linecap="round" opacity=".6"/>
+            <circle cx="17" cy="10" r="2.5" stroke="#3fb950" stroke-width="1.4"/>
+            <path d="M16 10l.8.8 1.6-1.6" stroke="#3fb950" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="product-name">BEVM Scanner</div>
+        <div class="product-url">
+          <a href="https://bevm.trilocore.ai/" target="_blank" rel="noopener" style="color:var(--accent)">bevm.trilocore.ai ↗</a>
+        </div>
+        <div class="product-desc">
+          GPU-accelerated EVM bytecode fuzzer running 1024 parallel attack threads.
+          Five-phase pipeline — recon, x-ray, attack graph construction, fuzzing, and
+          CPU replay confirmation on Anvil mainnet fork. Generates working Foundry
+          exploit PoCs automatically.
+        </div>
+        <ul class="feature-list">
+          <li>208 static bytecode detectors across 20 submodules</li>
+          <li>13 runtime oracles: taint, reentrancy, integer, control-flow</li>
+          <li>Orphan block discovery via bipartite attack graph</li>
+          <li>Gate bypass: caller injection, wall cracker, Z3 solver</li>
+          <li>17 exploit seed templates + 8 mutation strategies</li>
+          <li>6-layer CPU replay verdict on real mainnet state</li>
+          <li>Flash loan amplification: Aave V3, Balancer, dYdX</li>
+        </ul>
+      </div>
+
+      <!-- Janus -->
+      <div class="product-card janus-card reveal reveal-delay-2">
+        <div class="product-icon gold">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="#d29922" stroke-width="1.6"/>
+            <circle cx="9" cy="10" r="1.5" fill="#d29922"/>
+            <circle cx="15" cy="10" r="1.5" fill="#d29922"/>
+            <path d="M8 15.5c1-1.5 6-1.5 8 0" stroke="#d29922" stroke-width="1.4" stroke-linecap="round"/>
+            <path d="M12 3v2M12 19v2M3 12h2M19 12h2" stroke="#d29922" stroke-width="1.2" stroke-linecap="round" opacity=".5"/>
+          </svg>
+        </div>
+        <div class="product-name">Janus AI Model</div>
+        <div class="product-url">
+          <a href="https://janus.trilocore.ai/" target="_blank" rel="noopener" style="color:var(--accent)">janus.trilocore.ai ↗</a>
+        </div>
+        <div class="product-desc">
+          Purpose-trained AI security model specialized in EVM vulnerability analysis.
+          Janus translates raw scanner findings into plain-language exploit reports,
+          generates attack narratives, and surfaces composable attack chains that
+          numeric oracles alone would miss.
+        </div>
+        <ul class="feature-list gold">
+          <li>EVM-specialized — trained on real on-chain exploit data</li>
+          <li>Plain-language severity explanations for non-expert readers</li>
+          <li>Attack chain composition — links single findings into kill chains</li>
+          <li>Exploit narrative generation for audit reports</li>
+          <li>Contextual remediation recommendations</li>
+          <li>Integrates with BEVM Scanner output natively</li>
+          <li>API-accessible — plug into any CI/CD security pipeline</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Architecture cards -->
+    <div class="arch-grid">
+      <div class="arch-card reveal reveal-delay-1">
+        <div class="arch-num">01 · RECON</div>
+        <div class="arch-title">Bytecode X-Ray</div>
+        <div class="arch-body">Disassemble, build CFG, extract selectors, resolve 4byte names, detect compiler version and known CVEs. Complete in &lt;0.5s.</div>
+      </div>
+      <div class="arch-card reveal reveal-delay-2">
+        <div class="arch-num">02 · ANALYSIS</div>
+        <div class="arch-title">Attack Graph</div>
+        <div class="arch-body">Bipartite selector↔slot graph. Finds ungated write paths, orphan blocks with dangerous ops, and bypass routes through access control.</div>
+      </div>
+      <div class="arch-card reveal reveal-delay-3">
+        <div class="arch-num">03 · FUZZ</div>
+        <div class="arch-title">GPU Execution</div>
+        <div class="arch-body">1024 SIMD threads. 8 mutation strategies. 13 live oracles. Attack graph seeds fed at energy 4.0–8.0. Orphan block PCs prioritized at weight 7.0.</div>
+      </div>
+      <div class="arch-card reveal reveal-delay-1">
+        <div class="arch-num">04 · VERIFY</div>
+        <div class="arch-title">CPU Replay</div>
+        <div class="arch-body">6-layer verdict on Anvil mainnet fork: revert check, PC reach, gas stipend, ABI packing, fund flow analysis, trace confirmation.</div>
+      </div>
+      <div class="arch-card reveal reveal-delay-2">
+        <div class="arch-num">05 · AMPLIFY</div>
+        <div class="arch-title">Profit Calculation</div>
+        <div class="arch-body">Flash loan wrapping on Aave V3, Balancer, dYdX. Loop amplification. NET_PROFIT = extracted − gas − fees − MEV discount.</div>
+      </div>
+      <div class="arch-card reveal reveal-delay-3">
+        <div class="arch-num">06 · REPORT</div>
+        <div class="arch-title">Foundry PoC</div>
+        <div class="arch-body">Auto-generated Foundry exploit test with real calldata, profit assertion, and step-by-step attack narrative from Janus AI.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Roadmap & Grant Ask ───────────────────────────────────────────── -->
+<section class="section grant" id="roadmap">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Grant Proposal</div>
+      <h2 class="section-title">What we're building next</h2>
+      <p class="section-body">
+        Grant funding accelerates the three highest-value gaps in on-chain security tooling.
+        All funded work is open-source and delivered as public goods to the ecosystem.
+      </p>
+    </div>
+
+    <div class="grant-grid">
+      <div>
+        <ul class="milestone-list">
+          <li class="milestone reveal">
+            <div class="ms-dot done">✓</div>
+            <div>
+              <div class="ms-title">BEVM Scanner v1 — Complete</div>
+              <div class="ms-body">GPU fuzzer, 208 detectors, attack graph, gate bypass, orphan block discovery, Anvil replay. Live at bevm.trilocore.ai.</div>
+            </div>
+          </li>
+          <li class="milestone reveal reveal-delay-1">
+            <div class="ms-dot active">→</div>
+            <div>
+              <div class="ms-title">Multi-Contract Fuzzing Engine — Q3 2026</div>
+              <div class="ms-body">End-to-end fuzzing across 3–5 contract chains. Flash loan → oracle → drain modeled as a single transaction sequence. Covers the real DeFi kill chain.</div>
+            </div>
+          </li>
+          <li class="milestone reveal reveal-delay-2">
+            <div class="ms-dot next">→</div>
+            <div>
+              <div class="ms-title">Janus AI Model Launch — Q3 2026</div>
+              <div class="ms-body">EVM-specialized vulnerability analysis model. Plain-language exploit reports, attack chain composition, CI/CD integration API.</div>
+            </div>
+          </li>
+          <li class="milestone reveal reveal-delay-3">
+            <div class="ms-dot next">→</div>
+            <div>
+              <div class="ms-title">Cross-Protocol Oracle Manipulation — Q4 2026</div>
+              <div class="ms-body">Inject manipulated oracle returns during fuzzing. Detect AMM pool drain via TWAP manipulation. Closes the biggest gap in existing DeFi security tooling.</div>
+            </div>
+          </li>
+          <li class="milestone reveal">
+            <div class="ms-dot future">○</div>
+            <div>
+              <div class="ms-title">Multi-Block Temporal Attacks — Q1 2027</div>
+              <div class="ms-body">Governance flash voting, TWAP grinding across blocks. Models the attacker timeline, not just single-TX snapshots.</div>
+            </div>
+          </li>
+          <li class="milestone reveal reveal-delay-1">
+            <div class="ms-dot future">○</div>
+            <div>
+              <div class="ms-title">Public API + SDK — Q1 2027</div>
+              <div class="ms-body">REST API exposing scanner, fuzzer, and Janus results. SDK for embedding security checks directly into protocol CI pipelines.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="budget-card reveal reveal-delay-2">
+          <div class="budget-title">How grant funds are allocated</div>
+
+          <div class="budget-row">
+            <span class="budget-label">Core R&amp;D — Multi-Contract Fuzzing</span>
+            <span class="budget-pct">40%</span>
+          </div>
+          <div class="budget-bar"><div class="budget-fill" style="width:40%"></div></div>
+
+          <div class="budget-row">
+            <span class="budget-label">Janus AI Model — Training &amp; Inference</span>
+            <span class="budget-pct">30%</span>
+          </div>
+          <div class="budget-bar"><div class="budget-fill green" style="width:30%"></div></div>
+
+          <div class="budget-row">
+            <span class="budget-label">Infrastructure &amp; RPC Costs</span>
+            <span class="budget-pct">15%</span>
+          </div>
+          <div class="budget-bar"><div class="budget-fill yellow" style="width:15%"></div></div>
+
+          <div class="budget-row">
+            <span class="budget-label">Open-Source Docs &amp; Community</span>
+            <span class="budget-pct">10%</span>
+          </div>
+          <div class="budget-bar"><div class="budget-fill orange" style="width:10%"></div></div>
+
+          <div class="budget-row">
+            <span class="budget-label">Security Audits of Our Own Code</span>
+            <span class="budget-pct">5%</span>
+          </div>
+          <div class="budget-bar"><div class="budget-fill" style="width:5%;background:var(--muted)"></div></div>
+        </div>
+
+        <div class="budget-card reveal reveal-delay-3" style="margin-top:20px;background:rgba(88,166,255,.04);border-color:rgba(88,166,255,.2)">
+          <div class="budget-title" style="color:var(--accent)">Why public goods?</div>
+          <p style="font-size:13px;color:var(--muted);line-height:1.7;">
+            Smart contract exploits don't just hurt individual protocols — they erode confidence
+            in the entire ecosystem. Every dollar lost to a preventable vulnerability is a
+            setback for mainstream adoption. We believe security tooling should be
+            <strong style="color:var(--text)">open, auditable, and free to use</strong> for any protocol.
+            Grant funding lets us build in the open without commercial constraints.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Ecosystem grant sources ──────────────────────────────────────── -->
+<section class="ecosystem">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Ecosystem Alignment</div>
+      <h2 class="section-title">Grant programs we're applying to</h2>
+      <p style="color:var(--muted);font-size:15px;max-width:520px;margin:12px auto 0;line-height:1.7">
+        Our tooling is chain-agnostic — EVM security infrastructure benefits every
+        L1 and L2 in the ecosystem.
+      </p>
+    </div>
+    <div class="grant-types">
+      <div class="grant-badge">Ethereum Foundation · ESP</div>
+      <div class="grant-badge">Gitcoin Grants</div>
+      <div class="grant-badge">Optimism RetroPGF</div>
+      <div class="grant-badge">Arbitrum DAO Grants</div>
+      <div class="grant-badge">Uniswap Foundation</div>
+      <div class="grant-badge">Polygon Village</div>
+      <div class="grant-badge">zkSync Ecosystem Fund</div>
+      <div class="grant-badge">Base Ecosystem Fund</div>
+      <div class="grant-badge">Chainlink BUILD</div>
+      <div class="grant-badge">Aave Grants DAO</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Apply ────────────────────────────────────────────────────────── -->
+<section class="section apply" id="apply">
+  <div class="container">
+    <div class="apply-inner">
+      <div class="reveal">
+        <div class="section-label">Get Involved</div>
+        <h2 class="section-title">Support the build</h2>
+        <p class="section-body" style="margin:0 auto">
+          Are you a grant program, DAO, foundation, or angel looking to fund open-source
+          security infrastructure? Fill out the form and we'll follow up within 48 hours.
+        </p>
+      </div>
+
+      <div class="apply-form reveal reveal-delay-1">
+        <form id="grantForm" onsubmit="submitForm(event)">
+          <div class="form-grid">
+            <div class="form-row">
+              <label>Your Name</label>
+              <input type="text" placeholder="Jane Doe" required />
+            </div>
+            <div class="form-row">
+              <label>Organization</label>
+              <input type="text" placeholder="Foundation / DAO / Fund" />
+            </div>
+          </div>
+          <div class="form-row">
+            <label>Email</label>
+            <input type="email" placeholder="you@foundation.org" required />
+          </div>
+          <div class="form-grid">
+            <div class="form-row">
+              <label>Grant Type</label>
+              <select>
+                <option>Ecosystem / Protocol Grant</option>
+                <option>Gitcoin Round</option>
+                <option>RetroPGF</option>
+                <option>Angel / Strategic Investment</option>
+                <option>Partnership / Integration</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label>Estimated Budget</label>
+              <select>
+                <option>&lt; $25K</option>
+                <option>$25K – $100K</option>
+                <option>$100K – $500K</option>
+                <option>$500K+</option>
+                <option>TBD / Let's discuss</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row">
+            <label>Message</label>
+            <textarea placeholder="Tell us about your grant program, timeline, and any specific deliverables you're interested in…"></textarea>
+          </div>
+          <button type="submit" class="form-submit">Send Inquiry →</button>
+        </form>
+      </div>
+
+      <!-- Direct contact -->
+      <div style="margin-top:32px;display:flex;gap:24px;justify-content:center;flex-wrap:wrap;font-size:13px;color:var(--muted)">
+        <span>Or reach us directly at:</span>
+        <a href="mailto:grants@trilocore.ai">grants@trilocore.ai</a>
+        <a href="https://bevm.trilocore.ai/" target="_blank" rel="noopener">bevm.trilocore.ai</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ───────────────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <svg width="18" height="18" viewBox="0 0 28 28" fill="none" style="vertical-align:-3px;margin-right:6px">
+            <polygon points="14,2 26,8 26,20 14,26 2,20 2,8" fill="none" stroke="#58a6ff" stroke-width="1.5"/>
+            <polygon points="14,7 21,11 21,17 14,21 7,17 7,11" fill="rgba(88,166,255,.1)" stroke="#58a6ff" stroke-width="1"/>
+            <circle cx="14" cy="14" r="2.5" fill="#3fb950"/>
+          </svg>
+          Trilocore
+        </div>
+        <div class="footer-tagline">
+          GPU-accelerated smart contract security infrastructure.
+          Open-source. Chain-agnostic. Built for the ecosystem.
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Products</div>
+        <ul class="footer-links">
+          <li><a href="https://bevm.trilocore.ai/" target="_blank" rel="noopener">BEVM Scanner</a></li>
+          <li><a href="https://janus.trilocore.ai/" target="_blank" rel="noopener">Janus AI Model</a></li>
+          <li><a href="#">API (coming)</a></li>
+          <li><a href="#">SDK (coming)</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Resources</div>
+        <ul class="footer-links">
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">GitHub</a></li>
+          <li><a href="#">Security Blog</a></li>
+          <li><a href="#">Audit Reports</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Grants</div>
+        <ul class="footer-links">
+          <li><a href="#roadmap">Roadmap</a></li>
+          <li><a href="#apply">Apply Now</a></li>
+          <li><a href="mailto:grants@trilocore.ai">Contact</a></li>
+          <li><a href="#">Proposal PDF</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© 2026 Trilocore. Open-source security infrastructure.</span>
+      <span>
+        <a href="https://bevm.trilocore.ai/" target="_blank" rel="noopener">bevm.trilocore.ai</a>
+        &nbsp;·&nbsp;
+        trilocore.ai
+      </span>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast">Inquiry sent! We'll follow up within 48 hours.</div>
+
+<script>
+  /* ── Particle network (blockchain nodes) ──────────────── */
+  (function () {
+    const canvas = document.getElementById('hero-canvas');
+    if (!canvas || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const ctx = canvas.getContext('2d');
+    let w, h, nodes, raf;
+    const COUNT = 56, LINK_DIST = 130, SPEED = 0.28;
+
+    function resize() {
+      w = canvas.width = canvas.offsetWidth * devicePixelRatio;
+      h = canvas.height = canvas.offsetHeight * devicePixelRatio;
+    }
+    function init() {
+      resize();
+      nodes = Array.from({ length: COUNT }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * SPEED * devicePixelRatio,
+        vy: (Math.random() - 0.5) * SPEED * devicePixelRatio,
+        r: (Math.random() * 1.6 + 1) * devicePixelRatio,
+      }));
+    }
+    const mouse = { x: -9999, y: -9999 };
+    canvas.parentElement.addEventListener('mousemove', e => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = (e.clientX - rect.left) * devicePixelRatio;
+      mouse.y = (e.clientY - rect.top) * devicePixelRatio;
+    });
+    canvas.parentElement.addEventListener('mouseleave', () => { mouse.x = mouse.y = -9999; });
+
+    function frame() {
+      ctx.clearRect(0, 0, w, h);
+      const ld = LINK_DIST * devicePixelRatio;
+      for (const n of nodes) {
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < 0 || n.x > w) n.vx *= -1;
+        if (n.y < 0 || n.y > h) n.vy *= -1;
+        // gentle pull toward cursor
+        const dx = mouse.x - n.x, dy = mouse.y - n.y;
+        const md = Math.hypot(dx, dy);
+        if (md < 160 * devicePixelRatio && md > 0) {
+          n.x += (dx / md) * 0.4;
+          n.y += (dy / md) * 0.4;
+        }
+      }
+      // links
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+          const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
+          const d = Math.hypot(dx, dy);
+          if (d < ld) {
+            const a = (1 - d / ld) * 0.5;
+            ctx.strokeStyle = `rgba(88,166,255,${a})`;
+            ctx.lineWidth = devicePixelRatio * 0.6;
+            ctx.beginPath();
+            ctx.moveTo(nodes[i].x, nodes[i].y);
+            ctx.lineTo(nodes[j].x, nodes[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      // nodes
+      for (const n of nodes) {
+        ctx.fillStyle = 'rgba(121,192,255,.85)';
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      raf = requestAnimationFrame(frame);
+    }
+    init();
+    frame();
+    window.addEventListener('resize', () => { cancelAnimationFrame(raf); init(); frame(); }, { passive: true });
+  })();
+
+  /* ── Terminal staggered reveal ─────────────────────────── */
+  (function () {
+    const term = document.getElementById('terminal');
+    if (!term) return;
+    const lines = term.querySelectorAll('div');
+    lines.forEach((l, i) => { l.style.animationDelay = (i * 0.18) + 's'; });
+    const tObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { term.classList.add('run'); tObs.disconnect(); }
+      });
+    }, { threshold: 0.3 });
+    tObs.observe(term);
+  })();
+
+  /* ── Scroll reveal ─────────────────────────────────────── */
+  const obs = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } }),
+    { threshold: 0.12 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  /* ── Animated counters ─────────────────────────────────── */
+  function animateCounter(el) {
+    const target = parseInt(el.dataset.target, 10);
+    const duration = 1400;
+    const start = performance.now();
+    function step(now) {
+      const t = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      el.textContent = Math.floor(ease * target).toLocaleString();
+      if (t < 1) requestAnimationFrame(step);
+      else el.textContent = target.toLocaleString();
+    }
+    requestAnimationFrame(step);
+  }
+
+  const statsObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        document.querySelectorAll('.counter').forEach(animateCounter);
+        statsObs.disconnect();
+      }
+    });
+  }, { threshold: 0.4 });
+  const statsBar = document.querySelector('.stats-bar');
+  if (statsBar) statsObs.observe(statsBar);
+
+  /* ── Form submit (demo) ────────────────────────────────── */
+  function submitForm(e) {
+    e.preventDefault();
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 4000);
+    e.target.reset();
+  }
+
+  /* ── Active nav link ───────────────────────────────────── */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) cur = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === `#${cur}` ? 'var(--text)' : '';
+    });
+  }, { passive: true });
+</script>
+</body>
+</html>
