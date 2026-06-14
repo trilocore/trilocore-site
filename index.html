@@ -31,6 +31,31 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
+  <!-- Structured data: Organization + flagship product -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "Trilocore",
+        "url": "https://trilocore.com",
+        "email": "grants@trilocore.com",
+        "description": "GPU-accelerated smart contract security infrastructure — EVM fuzzer, 208 vulnerability detectors, and the Janus AI analysis model for the on-chain ecosystem.",
+        "sameAs": ["https://bevm.trilocore.ai", "https://janus.trilocore.ai"]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "BEVM Scanner",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Web",
+        "url": "https://bevm.trilocore.ai",
+        "description": "GPU-accelerated EVM bytecode fuzzer: 1024 parallel threads, attack-graph analysis, orphan-block discovery, and automatic Foundry exploit PoC generation."
+      }
+    ]
+  }
+  </script>
+
   <style>
     /* ── Reset & tokens ─────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -605,6 +630,61 @@
       z-index: 999;
     }
     .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── Trust strip ────────────────────────────────────────────── */
+    .trust-strip { background: var(--bg); border-bottom: 1px solid var(--border); }
+    .trust-row {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 14px 34px; padding: 22px 0;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 9px;
+      font-size: 13px; color: var(--muted); font-weight: 500;
+    }
+    .trust-item svg { flex-shrink: 0; }
+    .trust-item b { color: var(--text); font-weight: 600; }
+
+    /* ── Comparison table ───────────────────────────────────────── */
+    .compare { background: var(--bg); }
+    .compare-wrap {
+      margin-top: 48px; border: 1px solid var(--border);
+      border-radius: 12px; overflow: hidden; overflow-x: auto;
+    }
+    table.compare-table {
+      width: 100%; border-collapse: collapse; font-size: 14px; min-width: 720px;
+    }
+    .compare-table th, .compare-table td {
+      padding: 13px 18px; text-align: left; border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .compare-table thead th {
+      background: var(--surface); font-size: 11px; text-transform: uppercase;
+      letter-spacing: .06em; color: var(--muted); font-weight: 700;
+    }
+    .compare-table thead th.us { color: var(--accent); }
+    .compare-table tbody tr:last-child td { border-bottom: none; }
+    .compare-table td.feat { color: var(--text); font-weight: 500; white-space: normal; }
+    .compare-table td.us { background: rgba(88,166,255,.05); color: var(--text); font-weight: 600; }
+    .compare-table .yes { color: var(--green); font-weight: 700; }
+    .compare-table .no  { color: var(--faint); }
+    .compare-table .partial { color: var(--yellow); }
+    .compare-note { margin-top: 14px; font-size: 12px; color: var(--faint); line-height: 1.6; }
+
+    /* ── FAQ ────────────────────────────────────────────────────── */
+    .faq { background: var(--surface); }
+    .faq-grid { margin-top: 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 22px 48px; }
+    .faq-item { border-bottom: 1px solid var(--border); padding-bottom: 18px; }
+    .faq-q {
+      font-size: 15px; font-weight: 600; color: var(--text);
+      margin-bottom: 8px; display: flex; gap: 9px; align-items: flex-start;
+    }
+    .faq-q::before {
+      content: "Q"; font-family: "JetBrains Mono", monospace; font-size: 11px;
+      color: var(--accent); background: rgba(88,166,255,.1);
+      border-radius: 4px; padding: 2px 7px; flex-shrink: 0; margin-top: 1px;
+    }
+    .faq-a { font-size: 13.5px; color: var(--muted); line-height: 1.65; padding-left: 27px; }
+    @media (max-width: 760px) { .faq-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -639,7 +719,7 @@
   <div class="container hero-inner">
     <div class="hero-badge">
       <span></span>
-      Seeking Ecosystem Grants &nbsp;·&nbsp; Open-Source Security Infrastructure
+      Seeking Ecosystem Grants &nbsp;·&nbsp; Smart-Contract Security Infrastructure
     </div>
     <h1>
       Securing the<br />
@@ -649,7 +729,7 @@
       Trilocore builds GPU-accelerated smart contract security tooling —
       combining a 1024-thread EVM fuzzer with Janus, our AI-powered
       vulnerability analysis model. 208 detectors. 50K–200K executions/second.
-      Open infrastructure for the entire ecosystem.
+      Security infrastructure for the entire ecosystem.
     </p>
     <div class="hero-actions">
       <a href="#apply" class="btn-primary">
@@ -713,6 +793,34 @@
   </div>
 </div>
 
+<!-- ── Trust strip ──────────────────────────────────────────────────── -->
+<div class="trust-strip">
+  <div class="container">
+    <div class="trust-row">
+      <div class="trust-item">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#3fb950" stroke-width="1.5"/><path d="M5.5 8l1.8 1.8L10.8 6" stroke="#3fb950" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span><b>Live in production</b> — bevm.trilocore.ai</span>
+      </div>
+      <div class="trust-item">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#58a6ff" stroke-width="1.5"/><path d="M5.5 8l1.8 1.8L10.8 6" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Reproducible exploit PoCs</span>
+      </div>
+      <div class="trust-item">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#58a6ff" stroke-width="1.5"/><path d="M5.5 8l1.8 1.8L10.8 6" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Chain-agnostic EVM coverage</span>
+      </div>
+      <div class="trust-item">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#58a6ff" stroke-width="1.5"/><path d="M5.5 8l1.8 1.8L10.8 6" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span><b>200K+</b> executions / second</span>
+      </div>
+      <div class="trust-item">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#58a6ff" stroke-width="1.5"/><path d="M5.5 8l1.8 1.8L10.8 6" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span><b>208</b> vulnerability detectors</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ── Problem ──────────────────────────────────────────────────────── -->
 <section class="section" id="problem">
   <div class="container">
@@ -739,7 +847,7 @@
         </div>
         <div class="problem-card reveal reveal-delay-3">
           <div class="problem-stat yellow">$250K</div>
-          <div class="problem-desc">Average cost of a professional manual smart contract audit — prohibitive for open-source and early-stage protocols.</div>
+          <div class="problem-desc">Average cost of a professional manual smart contract audit — prohibitive for early-stage and independent protocols.</div>
         </div>
       </div>
 
@@ -761,7 +869,7 @@
           <li>
             <span class="pill pill-orange">P1</span>
             <div>
-              <strong>Gate bypass patterns</strong> — <code>require(msg.sender == owner)</code> bypassed via ungated writers to the owner slot. Attack graph traversal is absent from all open-source tools.
+              <strong>Gate bypass patterns</strong> — <code>require(msg.sender == owner)</code> bypassed via ungated writers to the owner slot. Attack graph traversal is absent from existing tools.
             </div>
           </li>
           <li>
@@ -897,6 +1005,49 @@
   </div>
 </section>
 
+<!-- ── Comparison ───────────────────────────────────────────────────── -->
+<section class="section compare" id="compare">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">How We Compare</div>
+      <h2 class="section-title">Built for the attacks others miss</h2>
+      <p class="section-body">
+        Most tools stop at single-transaction static analysis. Trilocore models the
+        full on-chain kill chain at GPU speed — and ships a working, replay-verified
+        exploit, not just a warning.
+      </p>
+    </div>
+
+    <div class="compare-wrap reveal reveal-delay-1">
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th>Slither</th>
+            <th>Echidna / Foundry</th>
+            <th>Manual audit</th>
+            <th class="us">Trilocore</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="feat">Execution throughput</td><td class="no">static</td><td>~5K&nbsp;exec/s</td><td class="no">—</td><td class="us">200K+&nbsp;exec/s</td></tr>
+          <tr><td class="feat">Orphan-block / computed-JUMP discovery</td><td class="no">✗</td><td class="no">✗</td><td class="partial">manual</td><td class="us"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">Composed multi-contract chains</td><td class="no">✗</td><td class="partial">limited</td><td class="partial">manual</td><td class="us"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">Flash-loan + oracle modeling</td><td class="no">✗</td><td class="no">✗</td><td class="partial">manual</td><td class="us"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">Auto-generated exploit PoC</td><td class="no">✗</td><td class="partial">harness only</td><td class="partial">manual</td><td class="us"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">Mainnet-fork replay verdict</td><td class="no">✗</td><td class="partial">manual</td><td class="partial">manual</td><td class="us"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">Plain-language AI reporting</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="us">Janus AI</td></tr>
+          <tr><td class="feat">Cost to start</td><td>free</td><td>free</td><td class="no">~$250K</td><td class="us"><span class="yes">free tier + paid plans</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="compare-note">
+      Comparison reflects typical capabilities of each approach for end-to-end,
+      bytecode-level exploit discovery. Throughput figures are order-of-magnitude.
+    </p>
+  </div>
+</section>
+
 <!-- ── Roadmap & Grant Ask ───────────────────────────────────────────── -->
 <section class="section grant" id="roadmap">
   <div class="container">
@@ -905,7 +1056,7 @@
       <h2 class="section-title">What we're building next</h2>
       <p class="section-body">
         Grant funding accelerates the three highest-value gaps in on-chain security tooling.
-        All funded work is open-source and delivered as public goods to the ecosystem.
+        All funded work ships as production security infrastructure for the ecosystem.
       </p>
     </div>
 
@@ -980,7 +1131,7 @@
           <div class="budget-bar"><div class="budget-fill yellow" style="width:15%"></div></div>
 
           <div class="budget-row">
-            <span class="budget-label">Open-Source Docs &amp; Community</span>
+            <span class="budget-label">Documentation &amp; Community</span>
             <span class="budget-pct">10%</span>
           </div>
           <div class="budget-bar"><div class="budget-fill orange" style="width:10%"></div></div>
@@ -993,13 +1144,14 @@
         </div>
 
         <div class="budget-card reveal reveal-delay-3" style="margin-top:20px;background:rgba(88,166,255,.04);border-color:rgba(88,166,255,.2)">
-          <div class="budget-title" style="color:var(--accent)">Why public goods?</div>
+          <div class="budget-title" style="color:var(--accent)">Why fund ecosystem security?</div>
           <p style="font-size:13px;color:var(--muted);line-height:1.7;">
             Smart contract exploits don't just hurt individual protocols — they erode confidence
             in the entire ecosystem. Every dollar lost to a preventable vulnerability is a
-            setback for mainstream adoption. We believe security tooling should be
-            <strong style="color:var(--text)">open, auditable, and free to use</strong> for any protocol.
-            Grant funding lets us build in the open without commercial constraints.
+            setback for mainstream adoption. A free tier already puts baseline scanning in
+            reach of any protocol; grant funding lets us extend
+            <strong style="color:var(--text)">deep, automated security coverage</strong> to teams
+            that could never afford a six-figure manual audit — strengthening the whole ecosystem.
           </p>
         </div>
       </div>
@@ -1033,6 +1185,42 @@
   </div>
 </section>
 
+<!-- ── FAQ ──────────────────────────────────────────────────────────── -->
+<section class="section faq" id="faq">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">For Grant Committees</div>
+      <h2 class="section-title">Frequently asked questions</h2>
+    </div>
+    <div class="faq-grid reveal reveal-delay-1">
+      <div class="faq-item">
+        <div class="faq-q">How is the tooling made available?</div>
+        <div class="faq-a">Hosted, production-grade infrastructure on a freemium model: a free tier anyone can use within limits, plus Pro, Team, and Enterprise plans for higher volume and advanced features — with integration APIs for CI/CD. Grant-funded work expands what's available to the whole ecosystem.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">What is live today?</div>
+        <div class="faq-a">The BEVM Scanner runs in production at bevm.trilocore.ai — GPU fuzzer, 208 detectors, attack-graph analysis, and mainnet-fork replay. It's usable right now, not a roadmap promise.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Which chains do you support?</div>
+        <div class="faq-a">Any EVM chain. Analysis operates on raw bytecode, so coverage extends to every EVM L1 and L2 with no per-chain integration work — a single grant benefits the whole ecosystem.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How are grant funds allocated?</div>
+        <div class="faq-a">Core R&amp;D (multi-contract fuzzing), Janus model training &amp; inference, infrastructure/RPC, open docs &amp; community, and third-party audits of our own code. Full breakdown is in the roadmap above.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">How do you measure impact?</div>
+        <div class="faq-a">Confirmed vulnerabilities with reproducible PoCs on mainnet-fork state, coverage/throughput benchmarks against existing tools, and adoption by protocols and auditors running the platform.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Why fund ecosystem security?</div>
+        <div class="faq-a">Exploits erode confidence across the entire ecosystem, not just the hacked protocol. Extending deep, automated security coverage raises the floor for everyone — especially early-stage teams that can't afford a six-figure manual audit.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ── Apply ────────────────────────────────────────────────────────── -->
 <section class="section apply" id="apply">
   <div class="container">
@@ -1041,7 +1229,7 @@
         <div class="section-label">Get Involved</div>
         <h2 class="section-title">Support the build</h2>
         <p class="section-body" style="margin:0 auto">
-          Are you a grant program, DAO, foundation, or angel looking to fund open-source
+          Are you a grant program, DAO, foundation, or angel looking to fund ecosystem
           security infrastructure? Fill out the form and we'll follow up within 48 hours.
         </p>
       </div>
@@ -1118,7 +1306,7 @@
         </div>
         <div class="footer-tagline">
           GPU-accelerated smart contract security infrastructure.
-          Open-source. Chain-agnostic. Built for the ecosystem.
+          Production-grade. Chain-agnostic. Built for the ecosystem.
         </div>
       </div>
       <div>
@@ -1126,17 +1314,17 @@
         <ul class="footer-links">
           <li><a href="https://bevm.trilocore.ai/" target="_blank" rel="noopener">BEVM Scanner</a></li>
           <li><a href="https://janus.trilocore.ai/" target="_blank" rel="noopener">Janus AI Model</a></li>
-          <li><a href="#">API (coming)</a></li>
-          <li><a href="#">SDK (coming)</a></li>
+          <li><span style="color:var(--faint)">API · coming</span></li>
+          <li><span style="color:var(--faint)">SDK · coming</span></li>
         </ul>
       </div>
       <div>
-        <div class="footer-col-title">Resources</div>
+        <div class="footer-col-title">Explore</div>
         <ul class="footer-links">
-          <li><a href="#">Documentation</a></li>
-          <li><a href="#">GitHub</a></li>
-          <li><a href="#">Security Blog</a></li>
-          <li><a href="#">Audit Reports</a></li>
+          <li><a href="#products">How it works</a></li>
+          <li><a href="#compare">Comparison</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="https://bevm.trilocore.ai/" target="_blank" rel="noopener">Live Scanner ↗</a></li>
         </ul>
       </div>
       <div>
@@ -1145,13 +1333,13 @@
           <li><a href="#roadmap">Roadmap</a></li>
           <li><a href="#apply">Apply Now</a></li>
           <li><a href="mailto:grants@trilocore.com">Contact</a></li>
-          <li><a href="#">Proposal PDF</a></li>
+          <li><a href="mailto:grants@trilocore.com?subject=Trilocore%20grant%20proposal%20request">Request proposal</a></li>
         </ul>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <span>© 2026 Trilocore. Open-source security infrastructure.</span>
+      <span>© 2026 Trilocore. Smart contract security infrastructure.</span>
       <span>
         <a href="https://bevm.trilocore.ai/" target="_blank" rel="noopener">bevm.trilocore.ai</a>
         &nbsp;·&nbsp;
