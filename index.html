@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trilocore — Smart-Contract Security Infrastructure</title>
+  <meta name="description" content="Trilocore finds exploitable smart-contract vulnerabilities before attackers do. A GPU-accelerated EVM fuzzer with an interactive security workbench, replay-verified exploit PoCs, and the Janus AI analysis model — built for auditors, protocols, and security teams." />
+  <link rel="canonical" href="https://trilocore.com/" />
+  <meta name="theme-color" content="#0a0d12" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/favicon.svg" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Trilocore" />
+  <meta property="og:title" content="Trilocore — Smart-Contract Security Infrastructure" />
+  <meta property="og:description" content="Find exploitable smart-contract vulnerabilities before attackers do. GPU-accelerated EVM fuzzer, visual security workbench, and replay-verified exploit PoCs." />
+  <meta property="og:url" content="https://trilocore.com/" />
+  <meta property="og:image" content="https://trilocore.com/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Trilocore — Smart-Contract Security Infrastructure" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Trilocore — Smart-Contract Security Infrastructure" />
+  <meta name="twitter:description" content="GPU-accelerated EVM fuzzer + AI-powered vulnerability detection with replay-verified exploit PoCs." />
+  <meta name="twitter:image" content="https://trilocore.com/og-image.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+
+  <!-- Structured data: Organization + flagship product -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "Trilocore",
+        "url": "https://trilocore.com",
+        "email": "hello@trilocore.com",
+        "description": "GPU-accelerated smart-contract security infrastructure — EVM fuzzer, vulnerability detectors, and the Janus AI analysis model.",
+        "sameAs": ["https://bevm.trilocore.ai", "https://janus.trilocore.ai", "https://github.com/trilocore", "https://x.com/trilocore"]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "BEVM Scanner",
+        "applicationCategory": "SecurityApplication",
+        "operatingSystem": "Web",
+        "url": "https://bevm.trilocore.ai",
+        "description": "GPU-accelerated EVM bytecode fuzzer: parallel execution, attack-graph analysis, orphan-block discovery, and automatic Foundry exploit PoC generation."
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+<!-- ── Navigation ─────────────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-logo" href="/" aria-label="Trilocore home">
+      <img src="/trilocore-mark-terminal.svg" alt="" width="26" height="26" />
+      Trilocore
+    </a>
+    <ul class="nav-links">
+      <li><a href="#product">Product</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#compare">Compare</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="https://doc.trilocore.com" target="_blank" rel="noopener">Docs</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="https://bevm.trilocore.ai/" target="_blank" rel="noopener" class="nav-cta">Launch scanner</a>
+  </div>
+</nav>
+
+<!-- ── Hero ───────────────────────────────────────────────────────────── -->
+<header class="hero">
+  <div class="container hero-inner">
+    <div>
+      <div class="hero-badge"><span class="dot"></span> Smart-contract security infrastructure</div>
+      <h1>Find exploitable smart-contract vulnerabilities <span class="hl">before attackers do.</span></h1>
+      <p class="hero-sub">
+        Trilocore is an automated security workbench for the EVM. Disassemble any deployed
+        contract, fuzz it at GPU speed, and get a replay-verified Foundry exploit PoC —
+        not just a warning.
+      </p>
+      <div class="hero-actions">
+        <a href="https://bevm.trilocore.ai/" target="_blank" rel="noopener" class="btn btn-primary">
+          Launch scanner
+          <svg width="13" height="13" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M2 10L10 2M10 2H4M10 2v6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#contact" class="btn btn-secondary">Book a technical walkthrough</a>
+      </div>
+      <div class="hero-meta">
+        <span><span class="ok">●</span> Live at bevm.trilocore.ai</span>
+        <span><span class="ok">●</span> No install — runs in your browser</span>
+        <span><span class="ok">●</span> Any EVM chain</span>
+      </div>
+    </div>
+
+    <!-- Product preview (scan result) -->
+    <div class="preview reveal reveal-d1" aria-label="Scan result preview">
+      <div class="preview-chrome">
+        <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+        <span class="preview-url">bevm.trilocore.ai/scan</span>
+      </div>
+      <div class="preview-body">
+        <div class="preview-row">
+          <span>0xA0b8…eB48</span>
+          <span>fuzz <b>120s</b> · <b>2</b> findings</span>
+        </div>
+        <div class="finding">
+          <span class="sev sev-crit">CRIT</span>
+          <div>
+            <div class="finding-t">Delegatecall injection</div>
+            <div class="finding-d">Arbitrary storage write to slot 0x0 via computed JUMP into an orphan block.</div>
+          </div>
+        </div>
+        <div class="finding">
+          <span class="sev sev-high">HIGH</span>
+          <div>
+            <div class="finding-t">Reentrancy in withdraw()</div>
+            <div class="finding-d">CEI violation — 3.8 ETH extractable on mainnet-fork replay.</div>
+          </div>
+        </div>
+        <div class="finding">
+          <span class="sev sev-pass">PoC</span>
+          <div>
+            <div class="finding-t">Exploit verified</div>
+            <div class="finding-d">Foundry test generated → results/exploit_0xA0b8.sol</div>
+          </div>
+        </div>
+        <div class="preview-foot">✓ Replay-verified on Anvil mainnet fork</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── Audience strip ─────────────────────────────────────────────────── -->
+<div class="strip">
+  <div class="container strip-inner">
+    <span class="strip-lead">BUILT FOR</span>
+    <span class="strip-item">Independent &amp; firm <b>auditors</b></span>
+    <span class="strip-item">DeFi <b>protocol teams</b></span>
+    <span class="strip-item">In-house <b>security engineers</b></span>
+    <span class="strip-item">CI/CD security <b>pipelines</b></span>
+  </div>
+</div>
+
+<!-- ── Stats ──────────────────────────────────────────────────────────── -->
+<div class="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="stat-num"><span class="counter" data-target="208">0</span></div>
+        <div class="stat-label">Static detectors<sup>1</sup></div>
+      </div>
+      <div class="stat">
+        <div class="stat-num"><span class="counter" data-target="1024">0</span></div>
+        <div class="stat-label">Parallel fuzz threads<sup>1</sup></div>
+      </div>
+      <div class="stat">
+        <div class="stat-num"><span class="counter" data-target="200">0</span><span class="u">K+</span></div>
+        <div class="stat-label">Executions / second<sup>2</sup></div>
+      </div>
+      <div class="stat">
+        <div class="stat-num"><span class="counter" data-target="633">0</span></div>
+        <div class="stat-label">Tests passing<sup>1</sup></div>
+      </div>
+      <div class="stat">
+        <div class="stat-num"><span class="counter" data-target="35">0</span></div>
+        <div class="stat-label">Security modules<sup>1</sup></div>
+      </div>
+    </div>
+    <p class="container footnote" style="padding-top:14px;">
+      <sup>1</sup> Counts from the current BEVM Scanner build, live at bevm.trilocore.ai.
+      <sup>2</sup> Peak fuzzing throughput on reference GPU hardware; order-of-magnitude figure, benchmark methodology available on request.
+    </p>
+  </div>
+</div>
+
+<!-- ── Problem ────────────────────────────────────────────────────────── -->
+<section class="section" id="problem">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">The problem</div>
+      <h2 class="section-title">Smart contracts are still the soft target</h2>
+      <p class="section-body">
+        Existing tools still miss the attacks that matter — computed jumps into orphan blocks,
+        precision and rounding errors, multi-step kill chains, and business-logic flaws. Manual
+        audits remain slow and expensive. Teams need fast, deep, automated coverage they can run
+        themselves.
+      </p>
+    </div>
+
+    <div class="problem-grid">
+      <div class="reveal">
+        <div class="stat-card">
+          <div class="big red">$3.4B<sup style="font-size:14px;">*</sup></div>
+          <div class="desc">Reported stolen across crypto in 2025. Smart-contract and protocol-logic bugs remain a primary attack surface.</div>
+        </div>
+        <div class="stat-card">
+          <div class="big orange">$200M+<sup style="font-size:14px;">*</sup></div>
+          <div class="desc">Lost to individual smart-contract exploits in 2025 — including Cetus (~$224M) and Balancer (~$128M).</div>
+        </div>
+        <div class="stat-card">
+          <div class="big yellow">$150K+</div>
+          <div class="desc">A full professional manual audit runs $150K–$250K and still takes weeks — prohibitive for early-stage teams.</div>
+        </div>
+        <p class="footnote"><sup>*</sup> Owner-supplied figures attributed to Chainalysis / Beosin 2025 reporting. Verify against the cited sources before relying on them.</p>
+      </div>
+
+      <div class="reveal reveal-d1">
+        <h3 style="font-size:15px;font-weight:700;margin-bottom:18px;color:var(--muted);">What existing tools miss</h3>
+        <ul class="gap-list">
+          <li><span class="tag tag-p0">P0</span><div><strong>Orphan block exploits</strong> — dead code with DELEGATECALL or SELFDESTRUCT reachable via computed JUMP at runtime. Static analyzers never walk these paths.</div></li>
+          <li><span class="tag tag-p1">P1</span><div><strong>Precision &amp; rounding errors</strong> — tiny per-call deltas drained across thousands of micro-swaps. Single-transaction analyzers never see the cumulative loss.</div></li>
+          <li><span class="tag tag-p1">P1</span><div><strong>Composed attack chains</strong> — flash loan + oracle manipulation + reentrancy. Most tools analyze one transaction, missing the multi-step kill chain.</div></li>
+          <li><span class="tag tag-p1">P1</span><div><strong>Gate bypass &amp; access control</strong> — <code>require(msg.sender == owner)</code> bypassed via ungated writers to the owner slot. Attack-graph traversal is absent from existing tools.</div></li>
+          <li><span class="tag tag-p2">P2</span><div><strong>Legacy &amp; deprecated contracts</strong> — forgotten code that still custodies funds and gets re-exploited long after launch.</div></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── How it works ───────────────────────────────────────────────────── -->
+<section class="section" id="how" style="background:var(--surface);">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">How it works</div>
+      <h2 class="section-title">A five-phase pipeline, from bytecode to PoC</h2>
+      <p class="section-body">
+        Paste a deployed address. Trilocore disassembles the bytecode, builds an attack graph,
+        fuzzes at GPU speed, and confirms each finding by replaying it on a mainnet fork.
+      </p>
+    </div>
+    <div class="grid-3">
+      <div class="card reveal"><div class="card-eyebrow">01 · RECON</div><div class="card-title">Bytecode X-ray</div><div class="card-body">Disassemble, build the CFG, extract selectors, resolve 4byte names, and detect compiler version and known CVEs.</div></div>
+      <div class="card reveal reveal-d1"><div class="card-eyebrow">02 · ANALYSIS</div><div class="card-title">Attack graph</div><div class="card-body">Bipartite selector↔slot graph. Finds ungated write paths, orphan blocks with dangerous ops, and access-control bypass routes.</div></div>
+      <div class="card reveal reveal-d2"><div class="card-eyebrow">03 · FUZZ</div><div class="card-title">GPU execution</div><div class="card-body">Parallel SIMD threads with multiple mutation strategies and live oracles for taint, reentrancy, integer, and control-flow bugs.</div></div>
+      <div class="card reveal"><div class="card-eyebrow">04 · VERIFY</div><div class="card-title">CPU replay</div><div class="card-body">Multi-layer verdict on an Anvil mainnet fork: revert check, PC reachability, ABI packing, fund-flow analysis, trace confirmation.</div></div>
+      <div class="card reveal reveal-d1"><div class="card-eyebrow">05 · AMPLIFY</div><div class="card-title">Profit calculation</div><div class="card-body">Flash-loan wrapping (Aave V3, Balancer, dYdX) and loop amplification. Net profit = extracted − gas − fees − MEV discount.</div></div>
+      <div class="card reveal reveal-d2"><div class="card-eyebrow">06 · REPORT</div><div class="card-title">Foundry PoC</div><div class="card-body">Auto-generated Foundry exploit test with real calldata, a profit assertion, and a plain-language narrative from Janus AI.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Products ───────────────────────────────────────────────────────── -->
+<section class="section products" id="product">
+  <div class="container">
+    <div class="section-head center reveal">
+      <div class="eyebrow">The platform</div>
+      <h2 class="section-title">Detection and explanation, in one pipeline</h2>
+      <p class="section-body">
+        BEVM Scanner catches what fuzzers and auditors miss. Janus AI explains what it finds in
+        plain language — from bytecode X-ray to a working exploit PoC.
+      </p>
+    </div>
+
+    <div class="grid-2">
+      <div class="card reveal">
+        <div class="product-icon"><img src="/bevm-mark-terminal.svg" alt="" width="26" height="26" /></div>
+        <div class="product-name">BEVM Scanner</div>
+        <div class="product-url"><a href="https://bevm.trilocore.ai/" target="_blank" rel="noopener">bevm.trilocore.ai ↗</a></div>
+        <div class="product-desc">
+          GPU-accelerated EVM bytecode fuzzer running parallel attack threads through a five-phase
+          pipeline — recon, x-ray, attack-graph construction, fuzzing, and CPU replay confirmation
+          on an Anvil mainnet fork. Generates working Foundry exploit PoCs automatically.
+        </div>
+        <ul class="feature-list">
+          <li>Visual workbench: Repeater, Scanner, Intruder, CFG graph, storage</li>
+          <li>208 static bytecode detectors across 20 submodules</li>
+          <li>13 runtime oracles: taint, reentrancy, integer, control-flow</li>
+          <li>Orphan block discovery via bipartite attack graph</li>
+          <li>Gate bypass: caller injection, wall cracker, Z3 solver</li>
+          <li>Mainnet-fork replay verdict on real on-chain state</li>
+        </ul>
+      </div>
+
+      <div class="card reveal reveal-d1">
+        <div class="product-icon"><img src="/janus-mark-terminal.svg" alt="" width="26" height="26" /></div>
+        <div class="product-name">Janus AI Model</div>
+        <div class="product-url"><a href="https://janus.trilocore.ai/" target="_blank" rel="noopener">janus.trilocore.ai ↗</a></div>
+        <div class="product-desc">
+          A purpose-trained AI security model specialized in EVM vulnerability analysis. Janus
+          translates raw scanner findings into plain-language exploit reports, generates attack
+          narratives, and surfaces composable attack chains that numeric oracles alone would miss.
+        </div>
+        <ul class="feature-list">
+          <li>EVM-specialized — trained on real on-chain exploit data</li>
+          <li>Plain-language severity explanations for non-expert readers</li>
+          <li>Attack-chain composition — links findings into kill chains</li>
+          <li>Exploit narrative generation for audit reports</li>
+          <li>Contextual remediation recommendations</li>
+          <li>API-accessible — plug into any CI/CD security pipeline</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Workbench preview ──────────────────────────────────────────────── -->
+<section class="section workbench" id="workbench">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">The workbench</div>
+      <h2 class="section-title">Security testing, made visual</h2>
+      <p class="section-body">
+        Every selector, CFG block, and storage slot laid out in front of you. Pick a function,
+        set the sender, hit Send, and watch the execution trace on a live mainnet fork.
+      </p>
+    </div>
+
+    <div class="wb-frame reveal reveal-d1">
+      <div class="wb-top">
+        <span class="wb-brand">bevm</span>
+        <span>RPC <b>mainnet-fork</b></span>
+        <span>Target balance <b>386.48 ETH</b></span>
+        <span class="wb-pill">● Mainnet fork</span>
+      </div>
+      <div class="wb-body">
+        <aside class="wb-side">
+          <div class="wb-addr">0x0286f920f893513c7ec9fe35ba0a4760229a243e</div>
+          <div class="wb-meta">93 CFG blocks · 10 selectors<br /><span class="sol">SOLIDITY 0.5.0</span> · 0 known / 10 unknown</div>
+          <div class="wb-grouphdr">Selectors (10)</div>
+          <div class="wb-sel"><span>0x3d103b6d</span><span class="t">unknown</span></div>
+          <div class="wb-sel"><span>0x54fd4d50</span><span class="t">unknown</span></div>
+          <div class="wb-sel"><span>0x5ec2dc8d</span><span class="t">unknown</span></div>
+          <div class="wb-sel"><span>0x8da5cb5b</span><span class="t">unknown</span></div>
+          <div class="wb-sel"><span>0xb1622818</span><span class="t">unknown</span></div>
+          <div class="wb-grouphdr">CFG Blocks (94)</div>
+          <div class="wb-sel"><span>0x2f2 PROXY</span><span class="t">SSTORE · orphan</span></div>
+          <div class="wb-sel"><span>0x32b PROXY</span><span class="t">CALL · orphan</span></div>
+        </aside>
+        <div class="wb-main">
+          <div class="wb-tabbar">
+            <div class="wb-tab active">Repeater</div>
+            <div class="wb-tab">Scanner</div>
+            <div class="wb-tab">Intruder</div>
+            <div class="wb-tab">Graph</div>
+            <div class="wb-tab">AI</div>
+            <div class="wb-tab">Contract</div>
+            <div class="wb-tab">Storage</div>
+            <div class="wb-tab">Blocks</div>
+          </div>
+          <div class="wb-panes">
+            <div class="wb-req">
+              <button class="wb-send" type="button">Send</button>
+              <div class="wb-panehdr">Request</div>
+              <div class="wb-field"><label>To</label><div class="wb-input">0x0286f920f893513c7ec9fe35ba0a4760229a243e</div></div>
+              <div class="wb-field"><label>Selector</label><div class="wb-input">0x3d103b6d</div></div>
+              <div class="wb-field"><label>Signature</label><div class="wb-input">transfer(address,uint256)</div></div>
+              <div class="wb-row3">
+                <div class="wb-field"><label>Sender</label><div class="wb-input">attacker</div></div>
+                <div class="wb-field"><label>Value</label><div class="wb-input">0</div></div>
+                <div class="wb-field"><label>Gas</label><div class="wb-input">10000000</div></div>
+              </div>
+            </div>
+            <div class="wb-res">
+              <div class="wb-panehdr">Response</div>
+              <div class="wb-ok">EVM/1 200 OK</div>
+              <div class="wb-kv">
+                Gas-Used <span class="v">23544</span><br />
+                Sender-Delta <span class="v">−23544 gwei</span><br />
+                Target-Delta <span class="v">0 wei</span><br />
+                Slots-Changed <span class="v">0</span>
+              </div>
+              <div class="wb-trace">
+                <div class="h">EXECUTION TRACE <small>66 steps · gas 23544</small></div>
+                Terminal opcode RETURN<br />
+                Revert PC <span style="color:var(--text)">0xdb @ depth 1</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="wb-caption reveal reveal-d2">
+      Live at <a href="https://bevm.trilocore.ai/" target="_blank" rel="noopener">bevm.trilocore.ai</a>.
+      No install, no source code required — paste an address and the bytecode is disassembled,
+      selectors resolved, and the CFG mapped in under a second.
+    </p>
+  </div>
+</section>
+
+<!-- ── Comparison ─────────────────────────────────────────────────────── -->
+<section class="section" id="compare" style="background:var(--surface);">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">How we compare</div>
+      <h2 class="section-title">Built for the attacks others miss</h2>
+      <p class="section-body">
+        Most tools stop at single-transaction static analysis. Trilocore models the full on-chain
+        kill chain at GPU speed — and ships a replay-verified exploit, not just a warning.
+      </p>
+    </div>
+
+    <div class="compare-wrap reveal reveal-d1">
+      <table class="compare">
+        <thead>
+          <tr>
+            <th>Capability</th>
+            <th>Slither</th>
+            <th>Echidna / Foundry</th>
+            <th>Manual audit</th>
+            <th class="us">Trilocore</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="feat">Execution throughput</td><td class="no">static</td><td>~5K&nbsp;exec/s</td><td class="no">—</td><td class="us">200K+&nbsp;exec/s</td></tr>
+          <tr><td class="feat">Orphan-block / computed-JUMP discovery</td><td class="no">✗</td><td class="no">✗</td><td class="partial">manual</td><td class="us"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">Composed multi-contract chains</td><td class="no">✗</td><td class="partial">limited</td><td class="partial">manual</td><td class="us"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">Flash-loan + oracle modeling</td><td class="no">✗</td><td class="no">✗</td><td class="partial">manual</td><td class="us"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">Auto-generated exploit PoC</td><td class="no">✗</td><td class="partial">harness only</td><td class="partial">manual</td><td class="us"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">Mainnet-fork replay verdict</td><td class="no">✗</td><td class="partial">manual</td><td class="partial">manual</td><td class="us"><span class="yes">✓</span></td></tr>
+          <tr><td class="feat">Plain-language AI reporting</td><td class="no">✗</td><td class="no">✗</td><td class="yes">✓</td><td class="us">Janus AI</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="footnote">
+      Comparison reflects typical capabilities of each approach for end-to-end, bytecode-level
+      exploit discovery. Throughput figures are order-of-magnitude.
+    </p>
+  </div>
+</section>
+
+<!-- ── Who it's for ───────────────────────────────────────────────────── -->
+<section class="section audience" id="who">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Who it's for</div>
+      <h2 class="section-title">One workbench, three teams</h2>
+    </div>
+    <div class="grid-3">
+      <div class="card aud-card reveal">
+        <div class="ico"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M8 1.5l5.5 2.5v3.5c0 3.2-2.3 5.4-5.5 6.5-3.2-1.1-5.5-3.3-5.5-6.5V4L8 1.5z" stroke="#7da6d9" stroke-width="1.3" stroke-linejoin="round"/></svg></div>
+        <div class="card-title">Auditors</div>
+        <div class="card-body">Triage a deployed contract in minutes, reproduce findings with replay-verified PoCs, and ship cleaner reports — without writing a Foundry harness by hand.</div>
+      </div>
+      <div class="card aud-card reveal reveal-d1">
+        <div class="ico"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M2 12V6l6-3.5L14 6v6" stroke="#7da6d9" stroke-width="1.3" stroke-linejoin="round"/><path d="M6 13V9h4v4" stroke="#7da6d9" stroke-width="1.3"/></svg></div>
+        <div class="card-title">Protocol teams</div>
+        <div class="card-body">Scan before every deploy and after every upgrade. Catch orphan-block and access-control regressions that single-transaction analyzers miss.</div>
+      </div>
+      <div class="card aud-card reveal reveal-d2">
+        <div class="ico"><svg width="20" height="20" viewBox="0 0 16 16" fill="none"><path d="M3 8l3 3 7-7" stroke="#7da6d9" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="card-title">Security engineers</div>
+        <div class="card-body">Wire the Janus API into CI/CD. Block merges on confirmed, reproducible exploits — not noisy static-analysis warnings.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Roadmap ────────────────────────────────────────────────────────── -->
+<section class="section" id="roadmap">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">Roadmap</div>
+      <h2 class="section-title">What we're building next</h2>
+      <p class="section-body">Every release ships as security infrastructure for the entire ecosystem.</p>
+    </div>
+
+    <div class="roadmap-grid">
+      <div class="reveal">
+        <div class="milestone"><div class="ms-dot done">✓</div><div><div class="ms-title">BEVM Scanner v1 — Complete</div><div class="ms-body">GPU fuzzer, 208 detectors, attack graph, gate bypass, orphan block discovery, Anvil replay. Live at bevm.trilocore.ai.</div></div></div>
+        <div class="milestone"><div class="ms-dot active">→</div><div><div class="ms-title">Multi-contract fuzzing engine — Q3 2026</div><div class="ms-body">End-to-end fuzzing across 3–5 contract chains. Flash loan → oracle → drain modeled as a single transaction sequence.</div></div></div>
+        <div class="milestone"><div class="ms-dot next">→</div><div><div class="ms-title">Janus AI model launch — Q3 2026</div><div class="ms-body">EVM-specialized analysis model. Plain-language exploit reports, attack-chain composition, CI/CD integration API.</div></div></div>
+        <div class="milestone"><div class="ms-dot next">→</div><div><div class="ms-title">Cross-protocol oracle manipulation — Q4 2026</div><div class="ms-body">Inject manipulated oracle returns during fuzzing. Detect AMM pool drain via TWAP manipulation.</div></div></div>
+        <div class="milestone"><div class="ms-dot future">○</div><div><div class="ms-title">Public API + SDK — Q1 2027</div><div class="ms-body">REST API exposing scanner, fuzzer, and Janus results. SDK for embedding checks into protocol CI pipelines.</div></div></div>
+      </div>
+
+      <div class="reveal reveal-d1">
+        <div class="aside-card">
+          <h3>Why this matters</h3>
+          <p>
+            Smart-contract exploits don't just hurt individual protocols — they erode confidence in
+            the entire ecosystem. Every dollar lost to a preventable vulnerability sets back
+            mainstream adoption. We extend deep, automated security coverage to teams that could
+            never afford a six-figure manual audit.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ────────────────────────────────────────────────────────────── -->
+<section class="section faq" id="faq">
+  <div class="container">
+    <div class="section-head reveal">
+      <div class="eyebrow">FAQ</div>
+      <h2 class="section-title">Frequently asked questions</h2>
+    </div>
+    <div class="faq-grid reveal reveal-d1">
+      <div class="faq-item"><div class="faq-q">How is Trilocore delivered?</div><div class="faq-a">As hosted, production-grade infrastructure that protocols and auditors use directly, with integration APIs for CI/CD pipelines.</div></div>
+      <div class="faq-item"><div class="faq-q">What is live today?</div><div class="faq-a">The BEVM Scanner runs in production at bevm.trilocore.ai — GPU fuzzer, 208 detectors, attack-graph analysis, and mainnet-fork replay. Usable now, not a roadmap promise.</div></div>
+      <div class="faq-item"><div class="faq-q">Which chains do you support?</div><div class="faq-a">Any EVM chain. Analysis operates on raw bytecode, so coverage extends to every EVM L1 and L2 with no per-chain integration work.</div></div>
+      <div class="faq-item"><div class="faq-q">Do you need source code?</div><div class="faq-a">No. Paste a deployed address and the bytecode is disassembled, selectors resolved, and the CFG mapped automatically.</div></div>
+      <div class="faq-item"><div class="faq-q">How do you measure impact?</div><div class="faq-a">Confirmed vulnerabilities with reproducible PoCs on mainnet-fork state, plus coverage and throughput benchmarks against existing tools.</div></div>
+      <div class="faq-item"><div class="faq-q">How do I report a security issue?</div><div class="faq-a">See our <a href="/.well-known/security.txt">security.txt</a> or email security@trilocore.com. We support coordinated disclosure.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Contact / CTA ──────────────────────────────────────────────────── -->
+<section class="section contact" id="contact">
+  <div class="container contact-inner">
+    <div class="reveal">
+      <div class="eyebrow">Get started</div>
+      <h2 class="section-title">Put Trilocore to work</h2>
+      <p class="section-body" style="margin:0 auto;">
+        Run the scanner yourself, book a technical walkthrough, or talk to us about a security
+        review or integration. Trilocore is free for every builder.
+      </p>
+      <div class="cta-row">
+        <a href="https://bevm.trilocore.ai/" target="_blank" rel="noopener" class="btn btn-primary">Launch scanner</a>
+        <a href="mailto:hello@trilocore.com?subject=Technical%20walkthrough" class="btn btn-secondary">Book a technical walkthrough</a>
+        <a href="mailto:hello@trilocore.com?subject=Security%20review" class="btn btn-ghost">Request a security review</a>
+      </div>
+      <div class="contact-alt">
+        <span>Or reach us directly:</span>
+        <a href="mailto:hello@trilocore.com">hello@trilocore.com</a>
+        <a href="https://github.com/trilocore" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────────────────── -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <img src="/trilocore-mark-terminal.svg" alt="" width="18" height="18" />
+          Trilocore
+        </div>
+        <div class="footer-tagline">
+          GPU-accelerated smart-contract security infrastructure. Production-grade, chain-agnostic,
+          built for the ecosystem.
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Product</div>
+        <ul class="footer-links">
+          <li><a href="https://bevm.trilocore.ai/" target="_blank" rel="noopener">BEVM Scanner</a></li>
+          <li><a href="https://janus.trilocore.ai/" target="_blank" rel="noopener">Janus AI Model</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#compare">Comparison</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Resources</div>
+        <ul class="footer-links">
+          <li><a href="https://doc.trilocore.com" target="_blank" rel="noopener">Docs ↗</a></li>
+          <li><a href="https://blog.trilocore.com" target="_blank" rel="noopener">Blog ↗</a></li>
+          <li><a href="#roadmap">Roadmap</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="https://github.com/trilocore" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a href="https://x.com/trilocore" target="_blank" rel="noopener">X ↗</a></li>
+          <li><a href="mailto:hello@trilocore.com">hello@trilocore.com</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Legal</div>
+        <ul class="footer-links">
+          <li><a href="/privacy.html">Privacy</a></li>
+          <li><a href="/terms.html">Terms</a></li>
+          <li><a href="/.well-known/security.txt">Security contact</a></li>
+          <li><a href="/.well-known/security.txt">Responsible disclosure</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© <span id="year">2026</span> Trilocore. Smart-contract security infrastructure.</span>
+      <span>
+        <a href="https://github.com/trilocore" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="https://x.com/trilocore" target="_blank" rel="noopener">X</a> ·
+        <a href="https://bevm.trilocore.ai/" target="_blank" rel="noopener">bevm.trilocore.ai</a>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/main.js" defer></script>
+</body>
+</html>
