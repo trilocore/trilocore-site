@@ -140,7 +140,7 @@
 
     /* ── Hero ───────────────────────────────────────────────────── */
     .hero {
-      min-height: 100vh;
+      min-height: 92vh;
       display: flex; flex-direction: column; justify-content: center;
       padding-top: 60px;
       position: relative; overflow: hidden;
@@ -150,9 +150,9 @@
       content: "";
       position: absolute; inset: 0;
       background-image:
-        linear-gradient(rgba(34,211,238,.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(34,211,238,.04) 1px, transparent 1px);
-      background-size: 48px 48px;
+        linear-gradient(rgba(230,237,243,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(230,237,243,.025) 1px, transparent 1px);
+      background-size: 56px 56px;
       pointer-events: none;
     }
     /* radial glow */
@@ -160,18 +160,18 @@
       content: "";
       position: absolute; top: -200px; left: 50%; transform: translateX(-50%);
       width: 900px; height: 600px;
-      background: radial-gradient(ellipse at center, rgba(34,211,238,.08) 0%, transparent 65%);
+      background: radial-gradient(ellipse at center, rgba(34,211,238,.045) 0%, transparent 65%);
       pointer-events: none;
     }
     /* particle network canvas */
     #hero-canvas {
       position: absolute; inset: 0; z-index: 0;
-      pointer-events: none; opacity: .55;
+      pointer-events: none; opacity: .22;
     }
     /* floating gradient orbs */
     .orb {
       position: absolute; border-radius: 50%; pointer-events: none;
-      filter: blur(60px); opacity: .35; z-index: 0;
+      filter: blur(70px); opacity: .16; z-index: 0;
     }
     .orb-1 {
       width: 340px; height: 340px; top: 8%; left: -80px;
@@ -201,7 +201,11 @@
       50%     { transform: translate(-30px,50px) scale(1.15); }
     }
 
-    .hero-inner { position: relative; z-index: 2; }
+    .hero-inner {
+      position: relative; z-index: 2;
+      display: grid; grid-template-columns: minmax(0, 1fr) 420px;
+      gap: 56px; align-items: center;
+    }
     .hero-badge {
       display: inline-flex; align-items: center; gap: 8px;
       background: rgba(34,211,238,.1); border: 1px solid rgba(34,211,238,.25);
@@ -214,16 +218,15 @@
     @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.8)} }
 
     .hero h1 {
-      font-size: clamp(38px, 6vw, 72px);
-      font-weight: 900; line-height: 1.08; letter-spacing: -.03em;
+      font-size: clamp(40px, 5.4vw, 68px);
+      font-weight: 850; line-height: 1.04; letter-spacing: -.04em;
       margin-bottom: 24px;
     }
     .gradient-text {
-      background: linear-gradient(115deg, #22d3ee 0%, #67e8f9 25%, #3fb950 50%, #67e8f9 75%, #22d3ee 100%);
-      background-size: 250% auto;
+      background: linear-gradient(115deg, #e6edf3 0%, #9ee7f2 45%, #8fb7ff 100%);
+      background-size: 100% auto;
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
-      animation: shimmer 6s linear infinite;
     }
     @keyframes shimmer {
       0%   { background-position: 0% center; }
