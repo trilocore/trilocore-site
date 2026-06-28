@@ -1,3 +1,3 @@
-# trilocore.ai
+# trilocore.com
 
-Static marketing/grants site for Trilocore — served via GitHub Pages.
+Static marketing site for Trilocore — served via GitHub Pages.
